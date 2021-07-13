@@ -10,6 +10,8 @@ library(mapview)
 gadmpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/GADM_Europa/"
 predpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors/"
 corpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Corine Land Cover/DATA/"
+predfinpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors_finished/"
+elepath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/WorldClim/wc2.1_2.5m_elev/"
 
 # In ETRS89 umprojizieren
 # WORLDCLIM
@@ -41,8 +43,6 @@ writeRaster(climmeanETRS, "climmeanETRS.grd", overwrite=TRUE)
 # CORINE LAND COVER
 
 cor <- raster(paste0(corpath, "U2018_CLC2018_V2020_20u1.tif"))
-res(cor)
-crs(cor)
 
 # Creating Rastertemplate
 precmeanETRS <- stack(paste0(predpath, "precmeanETRS.grd"))
@@ -67,7 +67,7 @@ tminmeanfin <- resample(tminmeancrop, rastemplate)
 
 climmeanfin <- raster::stack(precmeanfin, tmaxmeanfin, tminmeanfin)
 
-setwd(predpath)
+setwd(predfinpath)
 writeRaster(climmeanfin, "climmeanfin.grd", overwrite=TRUE)
 
 
@@ -94,7 +94,7 @@ Tmin370 <- stack(paste0(predpath, "Tmin370.grd"))
 
 # rastertemplate
 
-climmean <- stack(paste0(predpath, "climmeanfin.grd"))
+climmean <- stack(paste0(predfinpath, "climmeanfin.grd"))
 
 precmean <- stack(paste0(predpath, "precmean.grd"))
 
@@ -140,12 +140,55 @@ Tmax370fin <- resample(Tmax370ETRS, climmean)
 Tmin245fin <- resample(Tmin245ETRS, climmean)
 Tmin370fin <- resample(Tmin370ETRS, climmean)
 
-
-
 futureclim245 <- raster::stack(Prec245fin, Tmax245fin, Tmin245fin)
 futureclim370 <- raster::stack(Prec370fin, Tmax370fin, Tmin370fin)
 
-setwd(predpath)
+setwd(predfinpath)
 writeRaster(futureclim245, "futureclim245.grd", overwrite=TRUE)
 writeRaster(futureclim370, "futureclim370.grd", overwrite=TRUE)
+
+# RESAMPLE CORINE LAND COVER
+
+corfin <- resample(cor, climmean)
+
+res(corfin)
+
+setwd(predfinpath)
+writeRaster(corfin, "corfin.grd", overwrite=TRUE)
+
+
+# Resample Elevation
+
+ele <- raster(paste0(elepath, "wc2.1_2.5m_elev.tif"))
+crs(ele)
+
+elecrop <- crop(ele, rastemplate)
+
+eleETRS <- projectRaster(elecrop, crs="+init=epsg:3035")
+
+elefin <- resample(eleETRS, climmean)
+
+setwd(predfinpath)
+writeRaster(elefin, "elevation.grd", overwrite=TRUE)
+
+
+
+
+## Merging all the predictors
+
+predfinpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors_finished/"
+abundancepath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Abundance_data/"
+
+currentclim <- raster::stack(climmean, cor, elev)
+futureclim245 <- raster::stack(clim245, cor, elev)
+futureclim370 <- raster::stack(clim370, cor, elev)
+
+setwd(predfinpath)
+writeRaster(currentclim, "currentclimstack.grd", overwrite=TRUE)
+writeRaster(futureclim245, "futureclim245stack.grd", overwrite=TRUE)
+writeRaster(futureclim370, "futureclim370stack.grd", overwrite=TRUE)
+
+
+
+
 
