@@ -5,25 +5,15 @@ library(dismo)
 
 ### ABUNDANCE DATA ###
 
-abundancepath <- "E:/Landschafts?kologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Abundance_data/"
+abundancepath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Abundance_data/"
 
-?read.csv
-?read.csv2
-?paste0
 abund <- read.csv2(paste0(abundancepath, "willow_warbler_2020_Europe_latlong.csv"), header=T, sep=";")
 
-str(abund)
-head(abund)
-tail(abund)
-
-
-?substr
 abund$MONTH <- substr((abund$OBSERVATION.DATE), 4, 5)
 unique(abund$MONTH)
 
-ww <- abund[abund$MONTH == "06",]
-head(ww)
-
+ww <- abund[abund$MONTH == "06"| abund$MONTH == "05",]
+unique(ww$MONTH)
 
 
 ## Plotting the abundance data for an overview
@@ -43,7 +33,7 @@ latzero <- subset(ww, ww$LATITUDE==0)
 
 # Checking for exact duplicates
 
-dups <- duplicated(ww)
+dups <- duplicated(ww) # logical string e.g. [FALSE FALSE FALSE TRUE FALSE TRUE...]
 wwdups <- ww[dups, ]
 # --> no duplicates
 
@@ -82,6 +72,13 @@ points(ww$LONGITUDE, ww$LATITUDE, col="red", cex=0.75)
 
 setwd(abundancepath)
 write.csv2(wwnd, file="willow_warbler_2020_Europe_prep_and_clean.csv", row.names=TRUE)
-?write.csv2
+
+
+# PROJECTION into ETRS
+
+ww <- read.csv2(paste0(abundancepath, "willow_warbler_2020_Europe_prep_and_clean.csv"), header=T, sep=";")
+crs(ww)
+
+
 
 
