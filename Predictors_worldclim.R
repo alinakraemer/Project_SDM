@@ -252,6 +252,7 @@ Prec245Novmean <- calc(Prec245Nov, mean)
 Prec245Decmean <- calc(Prec245Dec, mean)
 
 Prec245fin <- stack(Prec245Janmean, Prec245Febmean, Prec245Marmean, Prec245Aprmean, Prec245Maymean, Prec245Junmean, Prec245Julmean, Prec245Augmean, Prec245Sepmean, Prec245Octmean, Prec245Novmean, Prec245Decmean)
+names(Prec245fin) <- paste("Prec", substr(names(Prec245fin), 7, 9))
 
 plot(Prec245fin)
 
@@ -314,6 +315,8 @@ Prec370Novmean <- calc(Prec370Nov, mean)
 Prec370Decmean <- calc(Prec370Dec, mean)
 
 Prec370fin <- stack(Prec370Janmean, Prec370Febmean, Prec370Marmean, Prec370Aprmean, Prec370Maymean, Prec370Junmean, Prec370Julmean, Prec370Augmean, Prec370Sepmean, Prec370Octmean, Prec370Novmean, Prec370Decmean)
+names(Prec370fin) <- paste("Prec", substr(names(Prec370fin), 7, 9))
+names(Prec370fin)
 
 plot(Prec370fin)
 
@@ -377,6 +380,8 @@ Tmax245Novmean <- calc(Tmax245Nov, mean)
 Tmax245Decmean <- calc(Tmax245Dec, mean)
 
 Tmax245fin <- stack(Tmax245Janmean, Tmax245Febmean, Tmax245Marmean, Tmax245Aprmean, Tmax245Maymean, Tmax245Junmean, Tmax245Julmean, Tmax245Augmean, Tmax245Sepmean, Tmax245Octmean, Tmax245Novmean, Tmax245Decmean)
+names(Tmax245fin) <- paste("Tmax", substr(names(Tmax245fin), 7, 9))
+names(Tmax245fin)
 
 plot(Tmax245fin)
 
@@ -438,6 +443,8 @@ Tmax370Novmean <- calc(Tmax370Nov, mean)
 Tmax370Decmean <- calc(Tmax370Dec, mean)
 
 Tmax370fin <- stack(Tmax370Janmean, Tmax370Febmean, Tmax370Marmean, Tmax370Aprmean, Tmax370Maymean, Tmax370Junmean, Tmax370Julmean, Tmax370Augmean, Tmax370Sepmean, Tmax370Octmean, Tmax370Novmean, Tmax370Decmean)
+names(Tmax370fin) <- paste("Tmax", substr(names(Tmax370fin), 7, 9))
+names(Tmax370fin)
 
 plot(Tmax370fin)
 
@@ -501,6 +508,8 @@ Tmin245Novmean <- calc(Tmin245Nov, mean)
 Tmin245Decmean <- calc(Tmin245Dec, mean)
 
 Tmin245fin <- stack(Tmin245Janmean, Tmin245Febmean, Tmin245Marmean, Tmin245Aprmean, Tmin245Maymean, Tmin245Junmean, Tmin245Julmean, Tmin245Augmean, Tmin245Sepmean, Tmin245Octmean, Tmin245Novmean, Tmin245Decmean)
+names(Tmin245fin) <- paste("Tmin", substr(names(Tmin245fin), 7, 9))
+names(Tmin245fin)
 
 plot(Tmin245fin)
 
@@ -562,6 +571,8 @@ Tmin370Novmean <- calc(Tmin370Nov, mean)
 Tmin370Decmean <- calc(Tmin370Dec, mean)
 
 Tmin370fin <- stack(Tmin370Janmean, Tmin370Febmean, Tmin370Marmean, Tmin370Aprmean, Tmin370Maymean, Tmin370Junmean, Tmin370Julmean, Tmin370Augmean, Tmin370Sepmean, Tmin370Octmean, Tmin370Novmean, Tmin370Decmean)
+names(Tmin370fin) <- paste("Tmin", substr(names(Tmin370fin), 7, 9))
+names(Tmin370fin)
 
 plot(Tmin370fin)
 
@@ -572,7 +583,7 @@ writeRaster(Tmin370fin, "Tmin370.grd",format="raster", overwrite=TRUE)
 
 
 
-
+# BCC-CSM2-MR
 
 BCCprec245 <- stack(paste0(BCCpath, "wc2.1_2.5m_prec_BCC-CSM2-MR_ssp245_2041-2060.tif"))
 BCCprec370 <- stack(paste0(BCCpath, "wc2.1_2.5m_prec_BCC-CSM2-MR_ssp370_2041-2060.tif"))
