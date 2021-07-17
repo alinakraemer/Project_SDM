@@ -84,6 +84,7 @@ library(mapview)
 gadmpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/GADM_Europa/"
 predpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors/"
 corpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Corine Land Cover/DATA/"
+predfinpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors_finished/"
 
 Prec245 <- stack(paste0(predpath, "Prec245.grd"))
 Prec370 <- stack(paste0(predpath, "Prec370.grd"))
@@ -151,7 +152,9 @@ writeRaster(futureclim370, "futureclim370.grd", overwrite=TRUE)
 
 corfin <- resample(cor, climmean)
 
+crs(corfin)
 res(corfin)
+extent(corfin)
 
 setwd(predfinpath)
 writeRaster(corfin, "corfin.grd", overwrite=TRUE)
@@ -179,16 +182,16 @@ writeRaster(elefin, "elevation.grd", overwrite=TRUE)
 predfinpath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Predictors_finished/"
 abundancepath <- "E:/Landschaftsökologie_Master/Module/M8a_Fernerkundung_und_raeumliche_Modellierung/Projekt_SDM/Data/Abundance_data/"
 
-currentclim <- raster::stack(climmean, cor, elev)
-futureclim245 <- raster::stack(clim245, cor, elev)
-futureclim370 <- raster::stack(clim370, cor, elev)
+futureclim245 <- raster::stack(paste0(predfinpath, "futureclim245.grd"))
+futureclim370 <- raster::stack(paste0(predfinpath, "futureclim370.grd"))
+corfin <- raster(paste0(predfinpath, "corfin.grd"))
+elefin <- raster(paste0(predfinpath, "elevation.grd"))
+
+currentclimstack <- raster::stack(climmean, corfin, elefin)
+futureclim245stack <- raster::stack(futureclim245, corfin, elefin)
+futureclim370stack <- raster::stack(futureclim370, corfin, elefin)
 
 setwd(predfinpath)
-writeRaster(currentclim, "currentclimstack.grd", overwrite=TRUE)
-writeRaster(futureclim245, "futureclim245stack.grd", overwrite=TRUE)
-writeRaster(futureclim370, "futureclim370stack.grd", overwrite=TRUE)
-
-
-
-
-
+writeRaster(currentclimstack, "currentclimstack.grd", overwrite=TRUE)
+writeRaster(futureclim245stack, "futureclim245stack.grd", overwrite=TRUE)
+writeRaster(futureclim370stack, "futureclim370stack.grd", overwrite=TRUE)
